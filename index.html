@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Laporan Pembayaran Praktikum – UNPAM</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#f5f6f9;--card:#fff;--bd:#e3e6ed;--tx:#1b2436;--mt:#667085;--pr:#12306b;--pr2:#e8edf8;--ac:#b8892b;--ok:#0f7b4f;--okb:#e3f4ec;--no:#b42318;--nob:#fdeceb;--sh:0 1px 3px rgba(16,24,40,.07)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0e1420;--card:#161e2e;--bd:#263047;--tx:#e6eaf3;--mt:#94a0b8;--pr:#8fb0ff;--pr2:#1d2a47;--ac:#d9aa4d;--ok:#4cc38a;--okb:#123326;--no:#ff8a80;--nob:#3a1a1a;--sh:none}}
+:root[data-theme=dark]{--bg:#0e1420;--card:#161e2e;--bd:#263047;--tx:#e6eaf3;--mt:#94a0b8;--pr:#8fb0ff;--pr2:#1d2a47;--ac:#d9aa4d;--ok:#4cc38a;--okb:#123326;--no:#ff8a80;--nob:#3a1a1a;--sh:none}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 'Plus Jakarta Sans',system-ui,sans-serif}
+svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.app{display:flex;min-height:100vh}
+aside{width:240px;background:var(--card);border-right:1px solid var(--bd);padding:18px 12px;position:sticky;top:0;height:100vh;flex:none}
+.brand{display:flex;gap:10px;align-items:center;padding:4px 8px 18px}
+.logo{width:40px;height:40px;border-radius:10px;background:var(--pr);color:#fff;display:grid;place-items:center;font-weight:800;overflow:hidden}
+.logo img{width:100%;height:100%;object-fit:contain;background:#fff}
+.brand b{display:block;font-size:14px}.brand small{color:var(--mt);font-size:11px}
+nav button{all:unset;box-sizing:border-box;display:flex;gap:10px;align-items:center;width:100%;padding:10px 12px;border-radius:8px;color:var(--mt);cursor:pointer;font-weight:500;margin-bottom:2px;transition:.15s}
+nav button:hover{background:var(--pr2);color:var(--pr)}nav button.on{background:var(--pr2);color:var(--pr);font-weight:700;box-shadow:inset 3px 0 var(--ac)}
+main{flex:1;min-width:0;padding:22px 28px}
+header.top{background:var(--card);border:1px solid var(--bd);border-radius:12px;box-shadow:var(--sh);padding:18px 22px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;border-top:3px solid var(--ac)}
+header.top .logo{width:56px;height:56px}
+header.top h1{margin:0;font-size:20px;color:var(--pr)}header.top p{margin:2px 0;color:var(--mt)}
+.badge{margin-left:auto;background:var(--pr);color:#fff;font-size:11px;font-weight:700;letter-spacing:.06em;padding:6px 12px;border-radius:99px}
+:root[data-theme=dark] .badge{color:#0e1420}
+.meta{display:flex;gap:6px 18px;flex-wrap:wrap;font-size:13px}.meta b{color:var(--tx)}
+.view{display:none;animation:up .3s ease}.view.on{display:block}@keyframes up{from{opacity:0;transform:translateY(6px)}}
+h2{font-size:17px;margin:22px 0 12px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;box-shadow:var(--sh);padding:16px}
+.stat{display:flex;gap:12px}.stat .ic{width:40px;height:40px;border-radius:10px;background:var(--pr2);color:var(--pr);display:grid;place-items:center;flex:none}
+.stat.ok .ic{background:var(--okb);color:var(--ok)}.stat.no .ic{background:var(--nob);color:var(--no)}
+.stat small{color:var(--mt);font-size:12px}.stat strong{display:block;font-size:22px;line-height:1.2}.stat em{font-style:normal;font-size:11px;color:var(--mt)}
+.bar{height:8px;background:var(--pr2);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--pr);border-radius:9px;transition:width .6s}
+.bar.ok i{background:var(--ok)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+input,select{font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:8px 10px}
+input[type=search]{flex:1;min-width:180px}
+.btn{font:inherit;display:inline-flex;gap:6px;align-items:center;padding:8px 12px;border-radius:8px;border:1px solid var(--bd);background:var(--card);color:var(--tx);cursor:pointer;font-weight:600;transition:.15s}
+.btn:hover{border-color:var(--pr);color:var(--pr)}.btn.p{background:var(--pr);color:#fff;border-color:var(--pr)}:root[data-theme=dark] .btn.p{color:#0e1420}
+.btn.s{padding:5px 10px;font-size:12px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:820px}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mt);padding:10px;border-bottom:1px solid var(--bd);white-space:nowrap;user-select:none}
+th.s{cursor:pointer}th.s:hover{color:var(--pr)}
+td{padding:10px;border-bottom:1px solid var(--bd)}tr:hover td{background:var(--pr2)}
+.r{text-align:right}.nim{font-variant-numeric:tabular-nums;color:var(--mt)}
+.st{font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap}.st.ok{background:var(--okb);color:var(--ok)}.st.no{background:var(--nob);color:var(--no)}
+.pg{display:flex;justify-content:space-between;align-items:center;margin-top:12px;color:var(--mt);flex-wrap:wrap;gap:8px}.pg div{display:flex;gap:4px}
+.pg .btn.on{background:var(--pr);color:#fff}
+.cg{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}.cg canvas{max-height:260px}
+.ov{position:fixed;inset:0;background:rgba(10,16,30,.5);display:none;place-items:center;padding:16px;z-index:50}.ov.on{display:grid}
+.md{background:var(--card);border-radius:14px;max-width:600px;width:100%;max-height:90vh;overflow:auto;padding:22px;animation:up .25s}
+.kv{display:grid;grid-template-columns:140px 1fr;gap:4px 10px;font-size:13px;margin:10px 0}.kv span{color:var(--mt)}
+.md table{min-width:0}.md h3{font-size:13px;margin:16px 0 6px;color:var(--pr)}
+#toast{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--pr);color:#fff;padding:10px 16px;border-radius:10px;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none;z-index:99}
+:root[data-theme=dark] #toast{color:#0e1420}#toast.on{opacity:1;transform:none}
+footer{margin-top:28px;padding:18px;text-align:center;color:var(--mt);font-size:12px;border-top:1px solid var(--bd)}footer b{color:var(--tx);display:block;font-size:13px}
+@media(max-width:860px){.app{flex-direction:column}aside{width:100%;height:auto;position:static;padding:8px;border:0;border-bottom:1px solid var(--bd)}.brand{display:none}nav{display:flex;overflow-x:auto;gap:4px}nav button{width:auto;white-space:nowrap}nav button.on{box-shadow:none}main{padding:14px}.badge{margin-left:0}}
+@media print{aside,.tools,.pg,.ac,#toast,.np{display:none!important}main{padding:0}.view{display:none!important}.view.on{display:block!important}.card,header.top{box-shadow:none}body{background:#fff;color:#000}}
+</style></head><body>
+<div class="app">
+<aside><div class="brand"><div class="logo" data-logo>U</div><div><b>UNPAM</b><small>Administrasi Praktikum</small></div></div>
+<nav id="nav"></nav></aside>
+<main>
+<header class="top"><div class="logo" data-logo>U</div>
+<div><h1>Laporan Pembayaran Praktikum</h1><p>Jaringan Komputer</p>
+<div class="meta"><span>Dosen Pengampu: <b>Wasis Haryono, M.Kom</b></span><span>Periode <b>20–30 September 2026</b></span></div></div>
+<span class="badge">TAHUN AKADEMIK 2026/2027</span></header>
+
+<section class="view on" id="v-dashboard"></section>
+<section class="view" id="v-mahasiswa"></section>
+<section class="view" id="v-laporan"></section>
+<section class="view" id="v-transaksi"></section>
+<section class="view" id="v-rekap"></section>
+<section class="view" id="v-pengaturan"></section>
+
+<footer><b>Universitas Pamulang</b><b>Program Studi Teknik Informatika</b>Laporan Administrasi Praktikum Jaringan Komputer<br>Periode 20–30 September 2026</footer>
+</main></div>
+<div class="ov" id="ov"><div class="md" id="md"></div></div><div id="toast"></div>
+<script>
+const P={dashboard:'M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z',mahasiswa:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8',laporan:'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h8',transaksi:'M4 2v20l3-2 2 2 3-2 3 2 2-2 3 2V2l-3 2-2-2-3 2-3-2-2 2zM8 8h8M8 12h8',rekap:'M3 3v18h18M7 16V11M12 16V7M17 16v-4',pengaturan:'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z',print:'M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z',dl:'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3',eye:'M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6',users:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8',check:'M20 6 9 17l-5-5',x:'M18 6 6 18M6 6l12 12',wallet:'M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h14v13H5a2 2 0 0 1-2-2V5M16 13h.01',pct:'M19 5 5 19M6.5 9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5M17.5 20a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5',tag:'M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8M7 7h.01'};
+const ic=n=>`<svg class="i" viewBox="0 0 24 24"><path d="${P[n]}"/></svg>`;
+const rp=n=>'Rp'+n.toLocaleString('id-ID'),dt=d=>d+' September 2026',$=s=>document.querySelector(s);
+const COST=150000,ITEMS=[['RJ45 + 1 Paket Kabel',20000],['Crimping & Pemasangan Alat',25000],['Biaya Praktik',50000],['Laporan Praktik',35000],['Alat Tambahan Lab',20000]];
+const N=`AFZAL PUTRA HARIYUDHA|251011400186;ARIEL S R R GURNING|251011401887;ARJUNA RAUF SURYA PUTRA|251011401902;AULIA KEYSA IRAWAN|251011400168;BANGKIT ABHIMATA PRAJA|251011400157;FIKRI ALFIYANSAH|251011401530;GATHAN FAHREZI|251011400185;HAMDAN|251011402535;HAN MAULANA YUSUF|251011400165;HELMA SYARIF KARTINI|251011400173;HIKBAL MAULANA|251011401605;INDRI RISNAWATI DEWI|251011401971;JUAN NABIL PRATAMA|251011401065;LUNA ZAHWA OKTAVIANA|251011401948;MARGARINCE KAKA|251011401883;MIKA OMAIR EHSAN|251011401711;MUHAMAD GIBRANS SETIAWAN|251011400171;MUHAMAD SYAHDAN FIRDAUS|251011401410;MUHAMMAD DAMAR RIDWAN|251011400167;MUHAMMAD HAFIDH ALI ZAINAL|251011400014;MUHAMMAD QOIS MUFLIHUDDIN|251011400158;MUHAMMAD RASYA AL-MUZAKI|251011402140;MUHAMMAD SATRIO WIBISONO|251011400156;NADIA SYAHARANI|251011402032;NAJWA HAFIZAH ASY SYIFA|251011400154;NAZARA SALSABILA IRAWAN|251011401411;RAFA AJZI PUTRA WIJAYA|251011401576;RAVA NEVILE KURNIA|251011400166;RESTU PUTRA PERMANA|251011400161;RIZKY ILHAM PRATAMA|251011400172;SITI ALFIAH SA\`ADAH|251011400162;STANLEY HUTAMA|251011402149;SUCI RAMADHANI|251011400177`.split(';').map(s=>s.split('|'));
+const FULL=[1,3,5,8,10,13,15,19,22,25,28,30,33];
+const PART={2:60,4:90,6:70,7:110,9:50,11:120,12:80,14:100,16:60,17:90,20:70,21:110,23:80,24:50,26:100,27:120,29:60,31:90,32:70};
+let seed=2026;const rnd=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
+const M=['Transfer Bank','QRIS','Tunai'];
+const S=N.map(([name,nim],k)=>{const no=k+1;let paid,tx=[];
+ if(nim==='251011401410'){paid=43000;tx=[{d:22,a:20000,m:'Transfer Bank'},{d:27,a:23000,m:'QRIS'}]}
+ else{paid=FULL.includes(no)?COST:PART[no]*1000;
+  let parts=paid===COST?1+Math.floor(rnd()*3):1+Math.floor(rnd()*2),left=paid,ds=[];
+  for(let j=0;j<parts;j++)ds.push(20+Math.floor(rnd()*11));ds.sort((a,b)=>a-b);
+  ds.forEach((d,j)=>{let a=j===parts-1?left:Math.max(10000,Math.round(left*(.35+rnd()*.3)/10000)*10000);if(a>=left&&j<parts-1)a=left-10000;left-=a;tx.push({d,a,m:M[Math.floor(rnd()*3)]})});}
+ tx.forEach((t,j)=>t.id='TRX-'+String(no).padStart(2,'0')+String(j+1).padStart(2,'0'));
+ return{no,name,nim,paid,rest:COST-paid,ok:paid>=COST,last:tx[tx.length-1].d,tx}});
+const tot=S.reduce((a,s)=>a+s.paid,0),TB=COST*S.length,nOk=S.filter(s=>s.ok).length,pct=(tot/TB*100).toFixed(1);
+const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2400)};
+const badge=s=>`<span class="st ${s.ok?'ok':'no'}">${s.ok?'LUNAS':'BELUM LUNAS'}</span>`;
+const stat=(c,i,l,v,e)=>`<div class="card stat ${c}"><div class="ic">${ic(i)}</div><div><small>${l}</small><strong>${v}</strong><em>${e||''}</em></div></div>`;
+const acts=`<div class="tools np"><button class="btn" onclick="print()">${ic('print')}Cetak</button><button class="btn" onclick="pdf()">${ic('dl')}PDF</button><button class="btn" onclick="xls()">${ic('dl')}Excel</button></div>`;
+const pdf=()=>{toast('Dialog cetak dibuka — pilih “Simpan sebagai PDF”');setTimeout(print,500)};
+const xls=()=>{try{const r=[['No','Nama','NIM','Tagihan','Dibayar','Sisa','Status','Tanggal Terakhir'],...S.map(s=>[s.no,s.name,s.nim,COST,s.paid,s.rest,s.ok?'LUNAS':'BELUM LUNAS',dt(s.last)])];
+ const b=new Blob(['\ufeff'+r.map(x=>x.map(c=>`"${c}"`).join(';')).join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='laporan-pembayaran-unpam.csv';a.click();toast('File Excel (CSV) diunduh')}catch(e){toast('Unduhan diblokir di mode pratinjau')}};
+window.addEventListener('beforeprint',()=>{st.size=99;tbl()});window.addEventListener('afterprint',()=>{st.size=10;tbl()});
+
+/* NAV */
+const V=[['dashboard','Dashboard'],['mahasiswa','Data Mahasiswa'],['laporan','Laporan Pembayaran'],['transaksi','Detail Transaksi'],['rekap','Rekap Keuangan'],['pengaturan','Pengaturan']];
+$('#nav').innerHTML=V.map(([k,l])=>`<button data-k="${k}">${ic(k)}${l}</button>`).join('');
+const go=k=>{document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+k));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));if(k==='rekap')charts();scrollTo({top:0})};
+$('#nav').onclick=e=>{const b=e.target.closest('button');if(b)go(b.dataset.k)};
+
+/* DASHBOARD */
+const recent=S.flatMap(s=>s.tx.map(t=>({...t,s}))).sort((a,b)=>b.d-a.d||b.id.localeCompare(a.id));
+$('#v-dashboard').innerHTML=`<h2>Ringkasan Pembayaran</h2><div class="grid">
+${stat('','users','Total Mahasiswa',S.length,'Kelas Jaringan Komputer')}${stat('ok','check','Sudah Lunas',nOk+' mhs','● Pembayaran penuh')}${stat('no','x','Belum Lunas',(S.length-nOk)+' mhs','● Masih ada sisa')}
+${stat('','tag','Total Tagihan',rp(TB),'33 × Rp150.000')}${stat('ok','wallet','Pembayaran Diterima',rp(tot),'Per 30 September 2026')}${stat('no','wallet','Total Sisa',rp(TB-tot),'Piutang praktikum')}
+${stat('','pct','Persentase Pembayaran',pct+'%','<div class="bar" style="margin-top:6px;width:130px"><i style="width:'+pct+'%"></i></div>')}</div>
+<h2>Transaksi Terbaru</h2><div class="card tw"><table><thead><tr><th>ID</th><th>Mahasiswa</th><th>Tanggal</th><th>Metode</th><th class="r">Nominal</th></tr></thead><tbody>${recent.slice(0,8).map(t=>`<tr><td class="nim">${t.id}</td><td>${t.s.name}</td><td>${dt(t.d)}</td><td>${t.m}</td><td class="r">${rp(t.a)}</td></tr>`).join('')}</tbody></table></div>
+<h2>Struktur Biaya Praktikum</h2><div class="card"><table style="min-width:0"><tbody>${ITEMS.map(i=>`<tr><td>${i[0]}</td><td class="r">${rp(i[1])}</td></tr>`).join('')}<tr><td><b>Total</b></td><td class="r"><b>${rp(COST)}</b></td></tr></tbody></table></div>`;
+
+/* MAHASISWA */
+$('#v-mahasiswa').innerHTML=`<h2>Data Mahasiswa</h2><div class="card tw"><table><thead><tr><th>No</th><th>Nama</th><th>NIM</th><th>Mata Kuliah</th></tr></thead><tbody>${S.map(s=>`<tr><td>${s.no}</td><td>${s.name}</td><td class="nim">${s.nim}</td><td>Jaringan Komputer</td></tr>`).join('')}</tbody></table></div>`;
+
+/* LAPORAN */
+const st={q:'',f:'',d:'',k:'no',asc:true,p:1,size:10};
+$('#v-laporan').innerHTML=`<h2>Laporan Pembayaran</h2>${acts}<div class="tools np"><input type="search" id="q" placeholder="Cari nama atau NIM…"><select id="f"><option value="">Semua status</option><option value="1">LUNAS</option><option value="0">BELUM LUNAS</option></select><select id="d"><option value="">Semua tanggal</option>${Array.from({length:11},(_,i)=>`<option value="${20+i}">${dt(20+i)}</option>`).join('')}</select><select id="k"><option value="no">Urut: No</option><option value="name">Urut: Nama</option><option value="paid">Urut: Dibayar</option><option value="rest">Urut: Sisa</option><option value="last">Urut: Tanggal</option></select><button class="btn" id="asc">↑↓</button></div>
+<div class="card"><div class="tw"><table><thead><tr>${[['no','No'],['name','Nama Mahasiswa'],['nim','NIM'],['','Total Tagihan'],['paid','Sudah Dibayar'],['rest','Sisa'],['ok','Status'],['last','Tanggal Terakhir'],['','Aksi']].map(([k,l])=>`<th class="${k?'s':''}" data-k="${k}">${l}</th>`).join('')}</tr></thead><tbody id="tb"></tbody></table></div><div class="pg" id="pg"></div></div>`;
+function tbl(){let r=S.filter(s=>(!st.q||(s.name+s.nim).toLowerCase().includes(st.q))&&(st.f===''||+s.ok==st.f)&&(!st.d||s.last==st.d));
+ r.sort((a,b)=>{let x=a[st.k],y=b[st.k];return(typeof x==='string'?x.localeCompare(y):x-y)*(st.asc?1:-1)});
+ const pages=Math.max(1,Math.ceil(r.length/st.size));st.p=Math.min(st.p,pages);
+ $('#tb').innerHTML=r.slice((st.p-1)*st.size,st.p*st.size).map(s=>`<tr><td>${s.no}</td><td><b>${s.name}</b></td><td class="nim">${s.nim}</td><td class="r">${rp(COST)}</td><td class="r">${rp(s.paid)}</td><td class="r" style="color:${s.rest?'var(--no)':'var(--ok)'}">${rp(s.rest)}</td><td>${badge(s)}</td><td>${dt(s.last)}</td><td class="ac"><button class="btn s" onclick="detail(${s.no})">${ic('eye')}Detail</button></td></tr>`).join('')||'<tr><td colspan="9" style="text-align:center;color:var(--mt)">Data tidak ditemukan</td></tr>';
+ $('#pg').innerHTML=`<span>${r.length} data</span><div>${Array.from({length:pages},(_,i)=>`<button class="btn s ${i+1===st.p?'on':''}" onclick="st.p=${i+1};tbl()">${i+1}</button>`).join('')}</div>`}
+$('#q').oninput=e=>{st.q=e.target.value.toLowerCase();st.p=1;tbl()};
+['f','d','k'].forEach(i=>$('#'+i).onchange=e=>{st[i]=e.target.value;st.p=1;tbl()});
+$('#asc').onclick=()=>{st.asc=!st.asc;tbl()};
+document.querySelector('#v-laporan thead').onclick=e=>{const k=e.target.dataset.k;if(!k)return;st.asc=st.k===k?!st.asc:true;st.k=k;$('#k').value=k in{no:1,name:1,paid:1,rest:1,last:1}?k:'no';tbl()};
+tbl();
+
+/* DETAIL */
+function detail(n){const s=S[n-1],p=Math.round(s.paid/COST*100);
+ $('#md').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:start"><div><h2 style="margin:0">${s.name}</h2><span class="nim">NIM ${s.nim}</span></div>${badge(s)}</div>
+<div class="kv"><span>Mata Kuliah</span><b>Jaringan Komputer</b><span>Dosen Pengampu</span><b>Wasis Haryono, M.Kom</b><span>Total Tagihan</span><b>${rp(COST)}</b><span>Total Dibayar</span><b>${rp(s.paid)}</b><span>Sisa Pembayaran</span><b style="color:${s.rest?'var(--no)':'var(--ok)'}">${rp(s.rest)}</b></div>
+<div class="bar ${s.ok?'ok':''}"><i style="width:${p}%"></i></div><small style="color:var(--mt)">Progress pembayaran ${p}%</small>
+<h3>Riwayat Transaksi</h3><table><thead><tr><th>ID</th><th>Tanggal</th><th>Metode</th><th class="r">Nominal</th></tr></thead><tbody>${s.tx.map(t=>`<tr><td class="nim">${t.id}</td><td>${dt(t.d)}</td><td>${t.m}</td><td class="r">${rp(t.a)}</td></tr>`).join('')}</tbody></table>
+<h3>Rincian Komponen Biaya</h3><table><tbody>${ITEMS.map(i=>`<tr><td>${i[0]}</td><td class="r">${rp(i[1])}</td></tr>`).join('')}<tr><td><b>Total</b></td><td class="r"><b>${rp(COST)}</b></td></tr></tbody></table>
+<div style="text-align:right;margin-top:16px"><button class="btn p" onclick="$('#ov').classList.remove('on')">Tutup</button></div>`;
+ $('#ov').classList.add('on')}
+$('#ov').onclick=e=>{if(e.target.id==='ov')e.target.classList.remove('on')};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#ov').classList.remove('on')});
+
+/* TRANSAKSI */
+$('#v-transaksi').innerHTML=`<h2>Detail Transaksi</h2>${acts}<div class="card tw"><table><thead><tr><th>ID</th><th>Mahasiswa</th><th>NIM</th><th>Tanggal</th><th>Metode</th><th class="r">Nominal</th></tr></thead><tbody>${recent.map(t=>`<tr><td class="nim">${t.id}</td><td>${t.s.name}</td><td class="nim">${t.s.nim}</td><td>${dt(t.d)}</td><td>${t.m}</td><td class="r">${rp(t.a)}</td></tr>`).join('')}</tbody></table></div>`;
+
+/* REKAP */
+$('#v-rekap').innerHTML=`<h2>Rekap Keuangan</h2>${acts}<div class="grid">${stat('','tag','Total Tagihan',rp(TB))}${stat('ok','wallet','Total Uang Masuk',rp(tot))}${stat('no','wallet','Total Piutang / Sisa',rp(TB-tot))}${stat('ok','check','Mahasiswa Lunas',nOk)}${stat('no','x','Mahasiswa Belum Lunas',S.length-nOk)}</div>
+<div class="cg" style="margin-top:14px"><div class="card"><b>Pembayaran per Tanggal</b><canvas id="c1"></canvas></div><div class="card"><b>Lunas vs Belum Lunas</b><canvas id="c2"></canvas></div><div class="card" style="grid-column:1/-1"><b>Akumulasi Pembayaran Masuk</b><canvas id="c3"></canvas></div></div>`;
+let done=0;function charts(){if(done||!window.Chart)return;done=1;
+ const L=Array.from({length:11},(_,i)=>20+i),per=L.map(d=>S.reduce((a,s)=>a+s.tx.filter(t=>t.d===d).reduce((x,t)=>x+t.a,0),0));
+ let c=0;const cum=per.map(v=>c+=v),lb=L.map(d=>d+' Sep'),cs=getComputedStyle(document.documentElement);
+ Chart.defaults.font.family="'Plus Jakarta Sans',sans-serif";Chart.defaults.color=cs.getPropertyValue('--mt').trim()||'#667085';
+ const y={ticks:{callback:v=>'Rp'+v/1000+'rb'}},tip={callbacks:{label:x=>rp(x.parsed.y??x.parsed)}};
+ new Chart($('#c1'),{type:'bar',data:{labels:lb,datasets:[{data:per,backgroundColor:'#3b5da8',borderRadius:4}]},options:{plugins:{legend:{display:false},tooltip:tip},scales:{y}}});
+ new Chart($('#c2'),{type:'doughnut',data:{labels:['Lunas','Belum Lunas'],datasets:[{data:[nOk,S.length-nOk],backgroundColor:['#2a9d6b','#d9695f'],borderWidth:0}]},options:{cutout:'62%'}});
+ new Chart($('#c3'),{type:'line',data:{labels:lb,datasets:[{data:cum,borderColor:'#b8892b',backgroundColor:'rgba(184,137,43,.12)',fill:true,tension:.3}]},options:{plugins:{legend:{display:false},tooltip:tip},scales:{y}}})}
+
+/* PENGATURAN */
+$('#v-pengaturan').innerHTML=`<h2>Pengaturan</h2><div class="card"><div class="kv"><span>Universitas</span><b>Universitas Pamulang (UNPAM)</b><span>Program Studi</span><b>Teknik Informatika</b><span>Mata Kuliah</span><b>Jaringan Komputer</b><span>Dosen Pengampu</span><b>Wasis Haryono, M.Kom</b><span>Periode</span><b>20–30 September 2026</b><span>Tagihan / mhs</span><b>${rp(COST)}</b><span>Tema</span><span><button class="btn s" onclick="const r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';toast('Tema diganti')">Terang / Gelap</button></span></div></div>`;
+document.querySelectorAll('[data-logo]').forEach(l=>{const i=new Image();i.alt='Logo UNPAM';i.src='logo-unpam.png';i.onload=()=>{l.textContent='';l.append(i)}});
+</script></body></html>
